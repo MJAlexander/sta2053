@@ -1,0 +1,129 @@
+---
+title: "STA2053 Special Topics in Applied Statistics"
+subtitle: "Winter 2026"
+format: pdf
+number-sections: true
+---
+__Details__:
+
+- Instructor: Monica Alexander, monica.alexander@utoronto.ca
+- Fridays 9am-12pm, starting 9 January 
+- Location: WW126 
+- Office hours: Friday 1-2pm 700 University Avenue Room 9135
+
+__Course website:__
+
+Quercus, and https://github.com/MJAlexander/sta2053
+
+# Course description
+This course covers a range of statistical methods, covering the application and interpretation of models on a range of different datasets. Topics  will have a particular focus on Bayesian inference, and include generalized linear models, hierarchical models, temporal models, splines regression, and model evaluation and selection. We will also cover some core statistical computing techniques, in particular how to fit Bayesian models in R. 
+
+# Textbooks
+
+There is no required textbook for this course. The following texts may be useful as reference:
+
+- Gelman, Andrew, John B. Carlin, Hal S. Stern, David B. Dunson, Aki Vehtari, and Donald B. Rubin. Bayesian data analysis. Chapman and Hall/CRC, 2013.
+- Gelman, Andrew, and Jennifer Hill. Data analysis using regression and multilevel/hierarchical models. Cambridge university press, 2006.
+- McElreath, Richard. Statistical Rethinking. CRC Press, 2020. 
+- Wickham, Hadley, and Garrett Grolemund. R for data science: import, tidy, transform, visualize, and model data. O'Reilly Media, Inc., 2016.
+
+
+# Computing
+Throughout the course we will be using R in all examples. Exams will also require interpretation of R output. In particular, you will be learning and expected to code in the `tidyverse` style, and all labs will be written using Quarto (or R Markdown). 
+
+You will need to have R and RStudio installed on your computer:
+
+- Download R here: https://www.r-project.org/
+- Download RStudio (free version) here: https://posit.co/download/rstudio-desktop/
+- Make sure you can render/knit a Quarto or R Markdown document (this may involve installing `tinytex`)
+
+You will also need to have a GitHub account: https://github.com/
+
+
+# Assessment
+
+Broadly, there are four components to the assessment for this course:
+
+- Lab exercises (5 in total), 2\% each
+- Mid-term exam, 25\%
+- Research paper report and presentation, 25\%
+- Final exam, 40\%
+
+All labs and assignments, and the written component of the research paper report will be completed in Quarto or R Markdown. The '.qmd' or '.Rmd', resulting pdf and any relevant files should be submitted, such that the file is reproducible and compiles to a pdf with no errors. 
+
+## Lab Exercises
+
+- Short hands-on exercises in R
+- To be handed in via GitHub
+
+## Mid-term and Final exams
+
+- A mix of multuple choice and short answer questions
+- There will be some interpretation of R output
+- In person
+
+## Research paper report and presentation
+
+I will assign each of you a published research article which draws on methods covered in this course. The goal of this assessment is for you to read and understand the paper, write a short summary report, and give a short presentation in class. 
+
+- **Research paper report (10%)** on your assigned paper. It is expected that the report will cover the background/motivation of the paper, data and methods used, summary of results, and a discussion about the strengths and limitations of the paper, including suggestions for extensions. Must be written in Quarto or R Markdown, and all files to reproduce the paper and analysis must be submitted via Quercus. 
+- **Presentation (15%)** on you research paper, including aspects covered in report. Around 10 minutes. It is expected you will present with the aid of slides. To take place in class.
+
+# Course policies
+
+## Communication 
+The best way to ask questions about course material or assignments is in person during the lecture or your instructor’s office hours. The following are guidelines for email communication: please make sure that you have a legitimate need before you write and that you cannot resolve your question during the lecture or office hours; email messages should state the course number and the purpose of the email clearly in the subject line. Please be respectful and clear when emailing. 
+
+## Accessibility Services 
+It is the University of Toronto's goal to create a community that is inclusive of all persons and treats all members of the community in an equitable manner. In creating such a community, the University aims to foster a climate of understanding and mutual respect for the dignity and worth of all persons. Please see the University of Toronto Governing Council “Statement of Commitment Regarding Persons with Disabilities” at 
+\url{http://www.governingcouncil.utoronto.ca/Assets/Governing+Council+Digital+Assets/Policies/PDF/ppnov012004.pdf.} 
+In working toward this goal, the University will strive to provide support for, and facilitate the accommodation of individuals with disabilities so that all may share the same level of access to opportunities, participate in the full range of activities that the University offers, and achieve their full potential as members of the University community. We take seriously our obligation to make this course as welcoming and accessible as feasible for students with diverse needs. We also understand that disabilities can change over time and will do our best to accommodate you. 
+Students seeking support must have an intake interview with a disability advisor to discuss their individual needs. In many instances it is easier to arrange certain accommodations with more advance notice, so we strongly encourage you to act as quickly as possible. To schedule a registration appointment with a disability advisor, please visit Accessibility Services at \url{http://www.studentlife.utoronto.ca/as}, call at 416-978-8060, or email at: accessibility.services@utoronto.ca. The office is located at 455 Spadina Avenue, 4th Floor, Suite 400. 
+Additional student resources for distressed or emergency situations can be located at distressedstudent.utoronto.ca; Health & Wellness Centre, 416-978-8030, \url{http://www.studentlife.utoronto.ca/hwc}, or Student Crisis Response, 416-946-7111.
+
+
+## Academic Integrity Clause
+Copying, plagiarizing, falsifying medical certificates, or other forms of academic misconduct will not be tolerated.  Any student caught engaging in such activities will be referred to the Dean’s office for adjudication.  Any student abetting or otherwise assisting in such misconduct will also be subject to academic penalties. Students are expected to cite sources in all written work and presentations. See this link for tips for how to use sources well: 
+(\url{http://www.writing.utoronto.ca/advice/using-sources/how-not-to-plagiarize}). 
+According to Section B.I.1.(e) of the Code of Behaviour on Academic Matters it is an offence "to submit, without the knowledge and approval of the instructor to whom it is submitted, any academic work for which credit has previously been obtained or is being sought in another course or program of study in the University or elsewhere."
+By enrolling in this course, you agree to abide by the university’s rules regarding academic conduct, as outlined in the Calendar. You are expected to be familiar with the Code of Behaviour on Academic Matters 
+(\url{http://www.artsci.utoronto.ca/osai/The-rules/code/the-code-of-behaviour-on-academic-matters}) and Code of Student Conduct 
+(\url{http://www.viceprovoststudents.utoronto.ca/publicationsandpolicies/codeofstudentconduct.htm}) which spell out your rights, your duties and provide all the details on grading regulations and academic offences at the University of Toronto. 
+
+## Equity and Diversity
+The University of Toronto is committed to equity and respect for diversity. All members of the learning environment in this course should strive to create an atmosphere of mutual respect. As a course instructor, I will neither condone nor tolerate behaviour that undermines the dignity or self-esteem of any individual in this course and wish to be alerted to any attempt to create an intimidating or hostile environment. It is our collective responsibility to create a space that is inclusive and welcomes discussion. Discrimination, harassment and hate speech will not be tolerated. 
+Additional information and reports on Equity and Diversity at the University of Toronto is available at
+ \url{http://equity.hrandequity.utoronto.ca}.
+
+## Use of Generative AI in Assignments 
+
+In general, students are discouraged from using generative AI tools, such as ChatGPT4 in this course. Specific course policies around the use of generative AI tools are as follows:
+
+-	R code: Students may wish to use generative AI tools to aid in initial development and writing of R code to lab questions. If this is the case, the use of such tools should be explicitly acknowledged in the submitted work, and the relevant prompts should be included as an appendix to the assignment. In addition, all code must be thoroughly commented or described in the submitted work. Failure to do so may result in penalties. 
+
+-	Written work: Using generative AI tools to generate written text contained in any of the assessments is prohibited in this course. Representing as one’s own an idea, or expression of an idea, that was AI-generated may be considered an academic offense in this course.  
+
+This course policy is designed to promote your learning and intellectual development and to help you reach course learning outcomes.
+
+
+# Course outline
+
+Planned content by week 
+
+- Week 1 (9/1/24): Introduction
+- Week 2 (16/1/24): Generalized linear models recap
+- Week 3 (23/1/24): Bayesian methods and inference 
+- Week 4 (30/1/24): MCMC
+- Week 5 (6/2/24):  Bayesian regression
+- Week 6 (13/2/24): Visualizing the Bayesian workflow and model checks
+
+READING WEEK (20/2/24)
+
+- Week 7 (27/2/24): MID-TERM 
+- Week 8 (6/3/24): Multilevel models 
+- Week 9 (13/3/24): Multilevel models II
+- Week 10 (20/3/24): Temporal models
+- Week 11 (27/3/24): Penalized splines
+- Week 12 (6/4/24): **Student presentations** (Note! this is the Monday after Good Friday)
+
+
