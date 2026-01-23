@@ -50,6 +50,7 @@ Broadly, there are four components to the assessment for this course:
 - Lab exercises (5 in total), 2\% each
 - Mid-term exam, 25\%
 - Research paper report and presentation, 25\%
+- Final paper, 40\%
 - ~~Final exam, 40\%~~
 
 All labs and assignments, and the written component of the research paper report will be completed in Quarto or R Markdown. The '.qmd' or '.Rmd', resulting pdf and any relevant files should be submitted, such that the file is reproducible and compiles to a pdf with no errors. 
@@ -72,7 +73,7 @@ I will assign each of you a published research article which draws on methods co
 - **Research paper report (10%)** on your assigned paper. It is expected that the report will cover the background/motivation of the paper, data and methods used, summary of results, and a discussion about the strengths and limitations of the paper, including suggestions for extensions. Must be written in Quarto or R Markdown, and all files to reproduce the paper and analysis must be submitted via Quercus. 
 - **Presentation (15%)** on you research paper, including aspects covered in report. Around 10 minutes. It is expected you will present with the aid of slides. To take place in class.
 
-## Research paper report and presentation
+## Final research report
 
 For the research project you will be required to investigate a research question of interest using a dataset of your choice and applying methods learned during the semester. The project consists of two components:
 
