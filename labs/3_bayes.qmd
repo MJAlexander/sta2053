@@ -1,0 +1,150 @@
+---
+title: "Week 3: Intro to Bayes"
+date: today
+date-format: "DD/MM/YY"
+format: pdf
+execute: 
+  warning: false
+  message: false
+---
+
+# Happiness
+
+## Question 1
+
+Consider the happiness example from the lecture, with 118 out of 129 women indicating they are happy. We are interested in estimating $\theta$, which is the (true) proportion of women who are happy. Calculate the MLE estimate $\hat{\theta}$ and 95% confidence interval. 
+
+## Question 2
+
+Assume a Beta(1,1) prior on $\theta$. Calculate the posterior mean for $\hat{\theta}$ and 95% credible interval. 
+
+## Question 3
+
+Now assume a Beta(10,10) prior on $\theta$. What is the interpretation of this prior? Are we assuming we know more, less or the same amount of information as the prior used in Question 2?
+
+
+# Jane Austen
+
+We are going to estimate the mean and standard deviation of average words per line in Jane Austen books, using grid approximation. First, load in the data, calculate the average words and look at the histogram.
+
+```{r}
+library(tidyverse)
+library(tidytext)
+library(janeaustenr)
+library(extraDistr)
+
+original_books <- austen_books() |>
+  group_by(book) |>
+  mutate(linenumber = row_number(),
+         chapter = cumsum(str_detect(text, 
+                                     regex("^chapter [\\divxlc]",
+                                           ignore_case = TRUE)))) |> ungroup()
+
+mean_words <- original_books |> 
+  filter(chapter>0) |> 
+  unnest_tokens(word, text) |> 
+  group_by(book, linenumber, chapter) |> 
+  tally() |> 
+  group_by(book, chapter) |> 
+  summarize(mean_words_per_line = mean(n)) 
+
+mean_words |> 
+  ggplot(aes(mean_words_per_line)) + 
+  geom_histogram(fill = "firebrick", color = "navy")+
+  labs(x = "Average words per line", title = "Distribution of average words per line across all chapters in all Jane Austen books")
+```
+We will assume the likelihood of average words $y$, is Normal
+$$
+\mathbf{y}| \mu, \sigma \sim N(\mu, \sigma^2)
+$$
+```{r}
+y <- mean_words$mean_words_per_line
+```
+
+Let's assume a Normal prior on $\mu$ and a half Normal prior on $\sigma$:
+$$
+\mu \sim N(\mu_0, \sigma^2_0)
+$$
+$$
+\sigma \sim N^+(0,0.1)
+$$
+
+Now let's set up a grid of size 50 and calculate our prior grid
+
+```{r}
+mu0 <- 10
+sigma_mu0 <- 5
+
+# how many mu's and how many sigma's?
+G<-50 ; H<-50
+mean_grid<-seq(9,15,length=G) 
+sd_grid<-seq(0.1,0.5,length=H) 
+
+# priors
+unstmean_prior <- dnorm(mean_grid, mu0, sigma_mu0)
+mean_prior <- unstmean_prior/sum(unstmean_prior)
+unstsd_prior <- dhnorm(sd_grid, sigma = 0.1)
+sd_prior <- unstsd_prior/sum(unstsd_prior)
+# joint prior
+unstprior_grid<-matrix(nrow=G,ncol=H)
+for(g in 1:G) {
+  for(h in 1:H) { 
+    unstprior_grid[g,h]<- mean_prior[g]*sd_prior[h]
+}}
+prior_grid<- unstprior_grid/sum(unstprior_grid)
+# sum(prior_grid) # check
+```
+
+Now calculate the posterior grid:
+
+```{r}
+logunstpost_grid<-matrix(nrow=G,ncol=H)
+for(g in 1:G) {
+  for(h in 1:H) { 
+    logunstpost_grid[g,h]<- log(prior_grid[g,h])+ sum((dnorm(y,mean_grid[g],sd_grid[h], log = T)))
+  }
+}
+# to avoid weird computer rounding
+post_grid <- exp(logunstpost_grid - max(logunstpost_grid))/
+    sum(exp(logunstpost_grid - max(logunstpost_grid)))
+
+# sum(post_grid) check
+```
+
+## Question 4
+
+Create `mean_post` and `sd_post`, the posterior marginal distributions for $\mu$ and $\sigma$.
+
+## Question 5
+
+Calculate the posterior mean values for $\mu$ and $\sigma$.
+
+
+## Plots
+Now let's plot the prior distributions
+
+```{r}
+# plots of discrete priors
+
+par(mfrow=c(1,3),mar=c(2.75,2.75,.5,.5),mgp=c(1.70,.70,0), cex = 1.3)
+image(mean_grid, sd_grid, prior_grid, col=gray( (10:0)/10 ),
+      xlab=expression(mu), ylab=expression(sigma) )
+
+plot(mean_grid,mean_prior,type="h",xlab=expression(mu),
+     ylab=expression( paste(italic("p("),
+                            mu,")",sep="")), ylim = range(0, mean_prior))
+
+plot(sd_grid,sd_prior, type="h",xlab=expression(sigma),
+     ylab=expression( paste(italic("p("),
+                            sigma,")",sep="")), ylim = range(0, sd_prior))
+```
+
+## Question 6
+
+Create a plot as above but for the posterior distributions
+
+## Question 7
+
+Now repeat the exercise but with a much more spread out prior on $\mu$. What happens to the posterior mean of $\mu$? What happens to the posterior sd of $\mu$?
+
+
