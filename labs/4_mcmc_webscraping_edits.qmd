@@ -1,0 +1,254 @@
+---
+title: "Week 4: Gibbs Sampling and Webscraping"
+date: today
+date-format: "DD/MM/YY"
+format: pdf
+execute: 
+  warning: false
+  message: false
+---
+
+# Gibbs Sampling
+
+In the first part of this lab we will write a Gibbs Sampler to get posterior estimates of the mean and variance of kid's test scores. Firstly, let's read in the data:
+
+```{r}
+library(tidyverse)
+kidiq <- read_rds("../data/kidiq.RDS")
+
+hist(kidiq$kid_score)
+```
+
+Normal likelihood:
+$$
+y_i \sim N(\mu, \sigma^2)
+$$
+Normal prior on $\mu$
+$$
+\mu \sim N(\mu_0, \sigma^2_{\mu_0})
+$$
+Gamma prior on $1/\sigma^2$
+$$
+1/\sigma^2 \sim \text{Gamma}(\nu_0/2,\nu_0/2\sigma^2_0 )
+$$
+
+
+
+Set up data, and choose some values for the prior hyperparameters: 
+
+```{r}
+y <- kidiq$kid_score
+mean_y <- mean(y)
+var_y <- var(y)
+sd_y <- sd(y)
+n <- length(y)
+
+# prior settings
+mu0 <- 0
+nu0<-5
+sigma_mu0 <-  sigma_0 <- 100
+nun <- nu0+n
+sigma2_mu0 <- sigma_mu0^2
+sigma2_0 <- sigma_0^2
+```
+
+Do the sampling (fill in the gaps!)
+
+```{r}
+set.seed(123)
+S <-1000
+phi <- c(mean_y, 1/var_y)
+phi_sp <- matrix(nrow=S,ncol=2) # matrix with dim (nsim, npar)
+phi_sp[1,] <- phi
+for(s in 2:S) {
+  # generate a new mu value from its full conditional
+  var_post <- 1/(1/sigma2_mu0 + n*(phi_sp[s-1,2]))
+  mu_post <- (mu0/sigma2_mu0 + n*mean_y*phi_sp[s-1,2])*var_post
+  mu_next <- rnorm(1, mean = mu_post, sd = sqrt(var_post))
+  # generate a new 1/sigma^2 value from its full conditional
+  s2n <- (n-1)*var_y + n*(mean_y - mu_next)^2
+  sigma_n_post <- 1/nun*(nu0*sigma2_0+s2n)
+  tau_next <- rgamma(1, nun/2, nun/2*sigma_n_post)
+  
+  phi <- c(mu_next, tau_next)
+  
+  phi_sp[s,] <- phi
+}
+```
+
+Look at quantiles:
+```{r, eval = F}
+quantile(phi_sp[,1],c(.025,.5,.975))
+quantile(phi_sp[,2],c(.025,.5, .975))
+quantile(1/sqrt(phi_sp[,2]),c(.025,.5, .975))
+```
+
+
+Plot the samples:
+
+```{r, eval = F}
+par(lwd = 3, cex.axis = 1.5, cex.lab = 2, cex.main = 2, mfrow = c(1,3), mar=c(5,5,1,1))
+for (m1 in c(5,15,100)){
+  plot( phi_sp[1:m1,],type="l",xlim=range(phi_sp[1:100,1]), ylim=range(phi_sp[1:100,2]),
+        lty=1,col="gray",xlab=expression(mu),ylab=expression(1/sigma^2))
+  text(  phi_sp[1:m1,1], phi_sp[1:m1,2], c(1:m1), cex = 2)
+}
+```
+
+## Exercises
+
+- Play around with different initial values
+- Plot traceplots
+
+```{r}
+as_tibble(phi_sp) |> 
+  mutate(iteration = 1:S) |> 
+  ggplot(aes(iteration, V1)) +
+  geom_line()
+```
+
+
+# Webscraping
+
+## Introduction
+
+There's a bunch of different ways to web-scrape, but we'll be exploring using the `rvest` package in R, that helps you to deal with parsing html. 
+
+Why is web scraping useful? If our research involves getting data from a website that isn't already in a easily downloadable form, it improves the reproducibility of our research. Once you get a scraper working, it's less prone to human error than copy-pasting, for example, and much easier for someone else to see what you did. 
+
+## A note on responsibility
+
+Seven principles for web-scraping responsibly:
+
+1. Try to use an API.
+2. Check robots.txt. (e.g. https://www.utoronto.ca/robots.txt)
+3. Slow down (why not only visit the website once a minute if you can just run your data collection in the background while you're doing other things?).
+4. Consider the timing (if it's a retailer then why not set your script to run overnight?).
+5. Only scrape once (save the data as you go and monitor where you are up to).
+6. Don't republish the data you scraped (cf datasets that create based off it).
+7. Take ownership (add contact details to your scripts, don't hide behind VPNs, etc)
+
+##  Extracting the Billboard top 100 songs list
+
+
+We're going to scrape the current Billboard top 100 songs list https://www.billboard.com/charts/hot-100/. While the data are nicely presented, there's no nice way of downloading the data for each year as a csv or similar form. So let's use `rvest` to extract the data. We'll also load in `janitor` to clean up column names etc later on. 
+
+```{r}
+library(tidyverse)
+library(rvest)
+library(janitor)
+```
+
+Firstly, read the html from the webpage:
+
+
+```{r}
+link <- "https://www.billboard.com/charts/hot-100/"
+billboard_page <- read_html(link)
+```
+
+We want to extract information from the (interactive) table. To find where this was in the html, I made use of the 'Inspect' option when you right-click in Chrome. This was a relatively straightforward way of find the right class for each table item. Once I had that, I pulled all the html nodes of that class, converted to text, removed all "\t" (tabs), converted to a tibble and then separated the values. The final line of code gets rid of all empty columns. 
+
+```{r}
+# class of table objects
+class <- "o-chart-results-list-row-container"
+
+rough_table <- billboard_page |> 
+  html_nodes(xpath = paste0("//div[@class = '",class,"']"))|> # pull out table
+  html_text() |> # convert to text
+  str_remove_all("\t") |> # remove tabs
+  as_tibble() |> # convert to tibble
+  separate(value, into = paste0(1:1000), sep = "\n") |> # separate into columns
+  select_if(function(x) !(all(is.na(x)) | all(x=="")))  # remove empty columns
+
+```
+
+We're almost there, but some of the values are mis-aligned, because some songs have an additional label of 'new' or a 're-entry'. To tidy this up, I found it easiest to separate these songs out, clean up the table, and then join them back together.
+
+```{r}
+# new songs tidying up
+rough_new <- rough_table |> 
+  filter(`12`=="NEW")|> 
+  select_if(function(x) !(all(is.na(x)) | all(x==""))) |> 
+  rename(position = `5`,
+         song_name = `43`,
+         artist = `48`,
+         peak_position = `79`,
+         weeks_in_chart = `92`
+         ) |> 
+    mutate(last_week = "-") |> 
+  select(position, song_name, artist, last_week, peak_position, weeks_in_chart) |> 
+  mutate(label = "new")
+
+# re-entry songs tidying up
+rough_re <- rough_table |> 
+  filter(`12` == "RE-") |> 
+  mutate(`49` = ifelse(`49`=="", `50`, `49`),
+         `80` = ifelse(`80`=="", `82`, `80`),
+         `93` = ifelse(`93`=="", `95`, `93`))|> 
+  rename(position = `5`,
+         song_name = `44`,
+         artist = `49`,
+         peak_position = `80`,
+         weeks_in_chart = `93`
+         ) |> 
+  mutate(last_week = "-") |> 
+  select(position, song_name, artist, last_week, peak_position, weeks_in_chart) |> 
+  mutate(label = "re-entry")
+
+# everything else tidying up
+rough_everything_else <- rough_table |> 
+  filter(`12` == "") |> 
+  mutate(`44` = ifelse(`44`=="", `45`, `44`),
+        `60` = ifelse(`60`=="", `62`, `60`),
+         `86` = ifelse(`86`=="", `88`, `86`),
+         `73` = ifelse(`73`=="", `75`, `73`))|> 
+  rename(position = `5`,
+         song_name = `39`,
+         artist = `44`,
+         last_week = `60`,
+         peak_position = `73`,
+         weeks_in_chart = `86`
+         ) |> 
+  select(position, song_name, artist, last_week, peak_position, weeks_in_chart) |> 
+  mutate(label = "NA")
+
+# bind them all together and sort
+clean_table <- bind_rows(rough_everything_else, 
+                         rough_new, rough_re) |> 
+  mutate(position = as.numeric(position)) |> 
+  arrange(position)
+
+clean_table
+```
+
+
+# Install rstan and brms
+
+We will be using the packages `rstan` and `brms` from next week. Please install these. Here's some instructions:
+
+- https://github.com/paul-buerkner/brms
+- https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started
+
+In most cases it will be straightforward and may not need much more than `install.packages()`, but you might run into issues. Every Stan update seems to cause problems for different OS.
+
+To make sure it works, run the following code:
+
+```{r}
+library(brms)
+
+x <- rnorm(100)
+y <- 1 + 2*x + rnorm(100)
+d <- tibble(x = x, y= y)
+
+mod <- brm(y~x, data = d)
+summary(mod)
+
+```
+
+
+
+
+
+
+
