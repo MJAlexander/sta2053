@@ -1,0 +1,35 @@
+---
+title: "Research paper report and presentation"
+author: "STA2053"
+format: pdf
+---
+
+# Overview 
+
+The goal of this assessment is for you to read and understand a paper where Bayesian hierarchical models have been used to solve a problem in an applied setting. When reading the paper, I want you to not only understand the advantages of using the model the authors chose, but read with a critical eye and think about any limitations, or alternative analysis choices that could have been made. 
+
+# The papers
+
+Please choose one paper from the following:
+
+- Alkema, L., Raftery, A. E., Gerland, P., Clark, S. J., Pelletier, F., Buettner, T., & Heilig, G. K. (2011). Probabilistic projections of the total fertility rate for all countries. Demography, 48(3), 815-839.
+- Cahill, N., Kemp, A. C., Horton, B. P., & Parnell, A. C. (2016). A Bayesian hierarchical model for reconstructing relative sea level: from raw data to rates of change. Climate of the Past, 12(2), 525-542.
+- Lin, J., Myers, M. F., Koehly, L. M., & Marcum, C. S. (2019). A Bayesian hierarchical logistic regression model of multiple informant family health histories. BMC Medical Research Methodology, 19(1), 56.
+- Virgili-Gervais, G., Schmidt, A. M., Bixby, H., Cavanaugh, A., Owusu, G., Agyei-Mensah, S., ... & Baumgartner, J. (2025). Mapping socio-economic status using mixed data: a hierarchical Bayesian approach. Journal of the Royal Statistical Society Series A: Statistics in Society, 188(3), 859-874.
+- Wang, W., Rothschild, D., Goel, S., & Gelman, A. (2015). Forecasting elections with non-representative polls. International journal of forecasting, 31(3), 980-991.
+
+# Report (10%)
+
+Write a summary report of your chosen paper. The report should be written in Quarto or R Markdown, and follow a logical format. It should include the following information:
+
+- Background/motivation of the paper
+- Outline of statistical model
+- Data use and summary of results 
+- Strengths and limitations of the paper. Think about: why was a Bayesian hierarchical model chosen? Was it useful/justified given the context? What other modeling approaches could have been considered? Are there obvious limitations? Any possible extensions?
+
+This will be due in Week 12. 
+
+# Presentation (15%)
+
+In Week 12 you will give a short presentation on your paper, summarizing your report. You should prepare slides, and aim for around 10-15 mins.  
+
