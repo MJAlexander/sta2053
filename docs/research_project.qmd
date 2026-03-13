@@ -1,5 +1,5 @@
 ---
-title: "Research proposal, presentation, paper"
+title: "Research proposal paper"
 format: pdf
 ---
 
@@ -37,14 +37,6 @@ If your dataset is reasonably small (and publicly available), then it would be g
 
 Please submit files via Quercus. Due Week 11.
 
-# Presentation
-
-In the final week you will have around 15 minutes to talk about your research project. The general format should be: 
-
-- Introduction / motivation
-- Dataset
-- Proposed methods/model
-- Any preliminary or expected results
 
 # Research paper
 
