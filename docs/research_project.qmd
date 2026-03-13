@@ -1,0 +1,131 @@
+---
+title: "Research proposal, presentation, paper"
+format: pdf
+---
+
+# Research proposal
+
+The final project for this class involves exploring a research question that you are interested in using a dataset of your choice. For the research proposal, I'm interested in finding out about your topic, and seeing some EDA based on your dataset of choice. Please describe 
+
+- your research question(s) of interest, and why they are of interest (if there's an obvious literature, feel free to cite a few papers)
+- the dataset you plan to use
+- your main dependent variable of interest
+- your main independent variables of interest (including control variables)
+- an indication of the methods/model you plan to use/run
+
+
+## Exploratory data analysis
+
+As part of your research proposal please undertake some basic EDA to illustrate the characteristics of your dataset, patterns in the raw data, and to present descriptive statistics related to your data and your research question. 
+
+There is no set format, but here are a few pointers of things to look at
+
+- **General characteristics of dataset** and **summary statistics of variables of interest**: for example, how many observations, how were the data collected (is the dataset representative of the population of interest?); you could present a table of summary statistics of main variables, including things like number of observations, mean/median/sd (if a continuous variable), proportions by group, etc...
+- **Missing data**: If your dataset does not have any missing observations, then fine to just say this (don't need to do EDA graphs or discuss). If you have missing observations, summarize what is missing, and give a brief discussion about whether or not you think missingness may be a problem (e.g. is there more likely to be missing data for some groups compared to others?)
+- **Graphs showing both univariate and bivariate patterns**: likely to be interested in both univariate patterns (e.g., the distribution of continuous variables, proportions for categorical outcomes...) and bivariate patterns (e.g. scatterplots, proportions/boxplots by group, trends over time...).
+
+While you'll probably make a lot of graphs/summaries etc while doing EDA, you don't have to submit everything --- just a few key observations. The proposal only needs to be 2-3 pages total (including graphs). 
+
+## What to submit
+
+It is expected that you present and write up your findings in Rmd. You should submit:
+
+- your .Rmd/.qmd file; and
+- the knitted PDF resulting from your .Rmd/.qmd file file. 
+
+If your dataset is reasonably small (and publicly available), then it would be great if you could submit that, too. 
+
+Please submit files via Quercus. Due Week 11.
+
+# Presentation
+
+In the final week you will have around 15 minutes to talk about your research project. The general format should be: 
+
+- Introduction / motivation
+- Dataset
+- Proposed methods/model
+- Any preliminary or expected results
+
+# Research paper
+
+Your final assessment is a research project based on the research question you presented in your proposal and in class. The aim is to apply some of the methods covered in class to gain insight into your question of interest, and write up your analysis in the form of a short research paper. Please submit files via Quercus. 
+
+## Tips
+
+- You should be aiming for your submission to read like a short research paper. This means using formal language, spell-checking, writing in complete paragraphs, etc.
+- If it is appropriate, refer to and cite previous work.
+- For readability, I would suggest hiding your code, and suppressing any warnings and messages in the pdf. All you really want to show are nicely formatted graphs, tables and results. 
+- Formatting is also important and helps readability. 
+- Spellcheck, please
+- Write all your models using appropriate mathematical notation.
+- You should include some type of model diagnostics or validation.
+- Be logical. Clearly state the problem you are analyzing, what the data look like, how you are doing it, what the results are, and what could be done in future. 
+- There is no page limit or page minimum. Note that quantity does not always indicate quality.
+- The PDF you submit must be able to be compiled from you .Rmd/.qmd file. 
+- If your data and/or model is large and it's hard to compile the one document, consider having separate R scripts which run and save output, which is then read into your .qmd file (you would also have to hand in the R scripts).
+- A reminder that using generative AI to for written text is prohibited in this course and considered an academic offense. 
+
+Below is a suggested outline of your paper. Note that this is meant to be useful as a guide only --- you do not have to do this exact outline. To reiterate, your submission should read like a research paper. 
+
+\newpage
+
+## Abstract
+
+You may include an abstract that summarizes you aims, data, methods and findings. Note that in RMarkdown/Quarto an abstract can be included in the YAML at the top of the file. 
+
+## Introduction
+
+Introduce the problem, clearly state your research question and motivation, mention previous work if relevant. 
+
+For this section and in general for the whole report, it should be written like a mini research paper. So instead of just stating your research question, try to introduce the topic in a conversational way. 
+
+## Data 
+
+This section should build on what you did for your initial EDA. It should include things like
+
+- A brief sentence explaining the data set you are using
+- Whether you subsetted to only include certain respondents
+- If values are missing, how are you dealing with this? Are they missing at random?
+- The variables in the data set you are using
+- Any other variables you created
+
+This section should also include any summary statistics, graphs or tables that 
+
+- describe the characteristics of your dataset, and
+- illustrate the relationship between variables that are related to your research question
+
+Please don't include pages and pages of graphs here. The goal is to describe the key features of the dataset that motivates the subsequent analysis. 
+
+
+## Methods
+
+- Describe the statistical method you are using to answer your research question
+- Write down the model and define any notation
+- Why is this method appropriate for the research question?
+- How are you fitting the model?
+- How are you validating the model?
+
+## Results
+
+Present your findings, including things like
+
+- Key coefficient estimates and CIs, with interpretation
+- Graphs/Visualizations where appropriate
+- Diagnostics
+- If relevant, discussion of alternative models tried/ changes made / improvement in diagnostics
+
+
+## Discussion
+
+- Discuss results as they relate to your research question
+- Were results surprising or expected?
+- Brief discussion about potential future work -- what could you do differently if you had more data or more time?
+
+## References
+
+- Any references you cited
+
+
+
+
+
