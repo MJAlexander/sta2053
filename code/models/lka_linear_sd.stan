@@ -2,13 +2,9 @@
 data {
   int<lower=0> N; // number of observations
   int<lower=0> T; //number of years
-  int<lower=0> P; // number of projection years
   int<lower=0> mid_year; // mid-year of study
   vector[N] y; //log ratio
-  vector[N] se; // standard error around observations
   vector[T] years; // unique years of study
-  vector[P] years_p; // projection years
-  real<lower=0> max_se; //maximum SE
   int<lower=0> year_i[N]; // year index of observations
   
 }
@@ -16,6 +12,7 @@ data {
 parameters {
   real alpha;
   real beta;
+  real<lower=0> sigma;
 
 }
 
@@ -29,18 +26,10 @@ transformed parameters{
 
 model {
   
-  y ~ normal(mu[year_i], se);
+  y ~ normal(mu[year_i], sigma);
   
   alpha ~ normal(0, 1);
   beta ~ normal(0,1);
-}
-
-generated quantities {
-  real y_proj[P];
-  real mu_proj[P];
-  for(i in 1:P){
-    mu_proj[i] = alpha + beta*(years_p[i] - mid_year);
-  }
-  y_proj = normal_rng(mu_proj, max_se);
+  sigma ~ normal(0,1);
 }
 

@@ -45,12 +45,28 @@ stan_data <- list(y = lka$logit_ratio, year_i = observed_years - years[1]+1,
 mod <- stan(data = stan_data,
              file = here("code/models/lka_linear_me.stan"))
 
+moda <- stan(data = stan_data,
+             file = here("code/models/lka_linear_me_plus.stan"))
+
+modb <- stan(data = stan_data,
+             file = here("code/models/lka_linear_sd.stan"))
+
 ```
 
 Extract the results:
 
 ```{r}
 res <- mod |> 
+  gather_draws(mu[t]) |> 
+  median_qi() |> 
+  mutate(year = years[t])
+
+resa <- moda |> 
+  gather_draws(mu[t]) |> 
+  median_qi() |> 
+  mutate(year = years[t])
+
+resb <- modb |> 
   gather_draws(mu[t]) |> 
   median_qi() |> 
   mutate(year = years[t])
@@ -72,6 +88,23 @@ ggplot(lka, aes(year, logit_ratio)) +
   theme_bw()+
   labs(title = "Ratio of neonatal to under-five child mortality (logit), Sri Lanka",
        y = "logit ratio", subtitle = "Linear fit shown in black")
+
+ggplot(lka, aes(year, logit_ratio)) +
+  geom_point(aes( color = source)) + 
+  geom_line(aes( color = source), lty = 2) + 
+  geom_ribbon(aes(ymin = logit_ratio - se, 
+                  ymax = logit_ratio + se, 
+                  fill =  source), alpha = 0.1) + 
+  theme_bw()+
+  geom_line(data = res, aes(year, .value)) + 
+  geom_ribbon(data = res, aes(y = .value, ymin = .lower, ymax = .upper), alpha = 0.2)+
+  geom_line(data = resa, aes(year, .value), color = "red") + 
+  geom_ribbon(data = resa, aes(y = .value, ymin = .lower, ymax = .upper), alpha = 0.2, fill = "red")+
+  geom_line(data = resb, aes(year, .value), color = "purple") + 
+  geom_ribbon(data = resb, aes(y = .value, ymin = .lower, ymax = .upper), alpha = 0.2, fill = "purple")+
+  theme_bw()+
+  labs(title = "Ratio of neonatal to under-five child mortality (logit), Sri Lanka",
+       y = "logit ratio", subtitle = "Linear fit shown in black, linear fit with addition sd shown in red")
 ```
 
 ## Question 1
@@ -150,6 +183,30 @@ ggplot(lka, aes(year, logit_ratio)) +
 ## Question 4
 
 Now alter your model above to estimate and project a second-order random walk model (RW2). 
+
+```{r}
+mod3 <- stan(data = stan_data,
+             file = here("code/models/lka_rw2.stan"))
+
+res3 <- mod3 |> 
+  gather_draws(alpha[t], alpha_proj[p]) |> 
+  median_qi() |> 
+  mutate(year = ifelse(!is.na(t), years[t], ((years[length(years)]+1):2024)[p]))
+
+ggplot(lka, aes(year, logit_ratio)) +
+  geom_point(aes( color = source)) + 
+  geom_line(aes( color = source), lty = 2) + 
+  geom_ribbon(aes(ymin = logit_ratio - se, 
+                  ymax = logit_ratio + se, 
+                  fill =  source), alpha = 0.1) + 
+  theme_bw()+
+  geom_line(data = res3 |> filter(year<2015), aes(year, .value)) + 
+  geom_ribbon(data = res3 |> filter(year<2015), aes(y = .value, ymin = .lower, ymax = .upper), alpha = 0.2)+
+  theme_bw()+
+  labs(title = "Ratio of neonatal to under-five child mortality (logit), Sri Lanka",
+       y = "logit ratio", subtitle = "Random walk fit shown in black")
+```
+
 
 ## Question 5
 
